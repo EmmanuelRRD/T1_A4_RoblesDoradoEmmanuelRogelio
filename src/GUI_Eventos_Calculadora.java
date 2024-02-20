@@ -1,21 +1,18 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.*;
 
 class VentanaInicio extends JFrame implements ActionListener{
-	
-	
 	
 	GridBagLayout gbl = new GridBagLayout();
 	GridBagConstraints gbc = new GridBagConstraints();
 	//==========================================================================
 	JTextField resultado = new JTextField();
 	
-	JButton CE, C, delet, suma, resta, multiplicacion, divicion, igual, porcentaje, raiz, cuadrado, unoEntreN;
-	
-    JButton uno, dos, tres, cuatro, cinco, seis, siete, ocho, Nueve;
+    JButton[] arrayBotones;
 	
 	
 	public VentanaInicio() {
@@ -27,15 +24,27 @@ class VentanaInicio extends JFrame implements ActionListener{
 		setTitle("Calculadora");
 		setVisible(true);
 		
-		CE = new JButton("CE");
-		CE.addActionListener(this);
-		settComponents(CE, 0, 0, 2, 2);
+		String[] botones = {"%","√","x²","1/x","CE","C","«","/","7","8","9","X","4","5","6","-","1","2","3","+","±","0",".","="};
+		arrayBotones = new JButton [botones.length];
 		
-		C = new JButton("C");
-		C.addActionListener(this);
-		gbc.fill = GridBagConstraints.VERTICAL;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		settComponents(C, 2, 0, 2, 2);
+		
+		
+		int y=2,x=1;
+		for(int i = 0; i < botones.length ; i++) {
+			
+			arrayBotones[i] = new JButton(botones[i]);
+			arrayBotones[i].addActionListener(this);
+			if(i%4==0) {
+				y = y*2;
+				x=1;
+			}
+			settBotones(arrayBotones[i], 2*x, y, 2, 2);
+			x++;
+			
+		}
+
+		
+		
 		
 	}//VentanaInicio
 	
@@ -47,11 +56,12 @@ class VentanaInicio extends JFrame implements ActionListener{
 	
 	}
 	 
-	public void settComponents(JComponent c, int x, int y,int w, int h) {
+	public void settBotones(JComponent c, int x, int y,int w, int h) {
 		gbc.gridx = x;//donde inicia en x
 		gbc.gridy = y;//donde inicia en y
 		gbc.gridwidth = w;//De cuanto es la medida de largo
 		gbc.gridheight = h;//La medida de alto
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbl.setConstraints(c, gbc);
 		add(c);
 	}
