@@ -10,10 +10,12 @@ class VentanaInicio extends JFrame implements ActionListener{
 	
 	GridBagLayout gbl = new GridBagLayout();
 	GridBagConstraints gbc = new GridBagConstraints();
-	JButton btnSumar = new JButton();
-	JTextField boxA1 = new JTextField();
-	JTextField boxA2 = new JTextField();
+	//==========================================================================
 	JTextField resultado = new JTextField();
+	
+	JButton CE, C, delet, suma, resta, multiplicacion, divicion, igual, porcentaje, raiz, cuadrado, unoEntreN;
+	
+    JButton uno, dos, tres, cuatro, cinco, seis, siete, ocho, Nueve;
 	
 	
 	public VentanaInicio() {
@@ -25,10 +27,15 @@ class VentanaInicio extends JFrame implements ActionListener{
 		setTitle("Calculadora");
 		setVisible(true);
 		
-		btnSumar = new JButton("Sumar");
-		btnSumar.addActionListener(this);
-		add(btnSumar);
+		CE = new JButton("CE");
+		CE.addActionListener(this);
+		settComponents(CE, 0, 0, 2, 2);
 		
+		C = new JButton("C");
+		C.addActionListener(this);
+		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		settComponents(C, 2, 0, 2, 2);
 		
 	}//VentanaInicio
 	
