@@ -4,12 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class VentanaInicio extends JFrame implements ActionListener {
-    private static final long serialVersionUID = 1L;
-	GridBagLayout gbl = new GridBagLayout();
-    GridBagConstraints gbc = new GridBagConstraints();
+	
+	String[] botones = {"%", "√", "x²", "1/x", "CE", "C", "«", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".", "="};
+	
+	private static final long serialVersionUID = 1L;
+	JButton[] arrayBotones;
+	
+	Logica_Calculadora lc = new Logica_Calculadora();
+	GridBagConstraints gbc = new GridBagConstraints();
     JTextField resultado = new JTextField("");
-
-    JButton[] arrayBotones;
+	GridBagLayout gbl = new GridBagLayout();
 
     public VentanaInicio() {
         getContentPane().setLayout(gbl);
@@ -21,33 +25,25 @@ class VentanaInicio extends JFrame implements ActionListener {
 
         Font font = new Font("Arial", Font.PLAIN, 25);
 
-        JTextArea Solucion = new JTextArea(" = ");
-        settBotones(Solucion, 2, 0, 1, 2);
-
-        JTextArea Estandar = new JTextArea("  ESTANDAR      ");
-        settBotones(Estandar, 3, 0, 5, 2);
-
-        JTextArea historial = new JTextArea("H");
-        settBotones(historial, 8, 0, 2, 2);
+        JButton options = new JButton("(");
+        options.addActionListener(this);
+        settBotones(options, 2, 0, 4, 2);
+        JButton historial = new JButton(")");
+        historial.addActionListener(this);
+        settBotones(historial, 6, 0, 4, 2);
         
-        // Elimina esta redeclaración de resultado
-        // JTextArea resultado = new JTextArea("");
         resultado.setFont(font);
         settBotones(resultado, 0, 2, 10, 2);
 
-        String[] botones = {"%", "√", "x²", "1/x", "CE", "C", "«", "/", "7", "8", "9", "X", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".", "="};
+        
         arrayBotones = new JButton[botones.length];
 
         int y = 4, x = 1;
         for (int i = 0; i < botones.length; i++) {
             arrayBotones[i] = new JButton(botones[i]);
             arrayBotones[i].addActionListener(this);
-            arrayBotones[i].setBackground(Color.WHITE);
             arrayBotones[i].setFont(font);
-
-            final int index = i;
-            arrayBotones[i].addActionListener(this); 
-
+            
             if (i % 4 == 0) {
                 y = y + 2;
                 x = 1;
@@ -56,8 +52,9 @@ class VentanaInicio extends JFrame implements ActionListener {
             x++;
         }
     }
-
+//=====================================================================Mostrar cosas en el cajón de la calculadora===============================================================
     public void settBotones(JComponent c, int x, int y, int w, int h) {
+    	c.setBackground(Color.WHITE);
         gbc.gridx = x;
         gbc.gridy = y;
         gbc.gridwidth = w;
@@ -66,23 +63,62 @@ class VentanaInicio extends JFrame implements ActionListener {
         gbl.setConstraints(c, gbc);
         add(c);
     }
-
+ //================================================El código para lo botones============================
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		JButton bottonElegido = (JButton) e.getSource();//Con el source
 		String botonAtext = bottonElegido.getText();
+		System.out.println(e);
 		
 		switch (botonAtext) {
-		case "" :
+		case "1/x":
+			Double num = Double.parseDouble( resultado.getText()),resul = 1/num;
+			resultado.setText(""+resul);
 			
 			break;
-		default:
-			resultado.setText(botonAtext);
+		case "CE": resultado.setText(""); break;
+		
+		case "C": resultado.setText(""); break;
+			
+		case "«": 
+			String contenido = resultado.getText();
+			
+			if(contenido.length() > 0) {
+			String datoBorrado = contenido.substring(0,contenido.length()-1);
+			resultado.setText(datoBorrado);
+			}
 			break;
+			
+		//
+		case "=":
+			double res = lc.hacerOperaciones(resultado.getText());
+			
+			resultado.setText(res+"");
+			break;
+		
+		case "±":
+			double res2=0;
+			if(resultado.getText().charAt(0) == 45) {
+				res2 = lc.hacerOperaciones("0"+resultado.getText());
+			}else {
+				res2 = lc.hacerOperaciones(resultado.getText());
+			}
+			
+			resultado.setText((res2*(-1))+"");
+			
+			break;
+		case "x²":
+			resultado.setText(resultado.getText() +"²");
+			break;	
+		case "√":
+			resultado.setText("("+resultado.getText()+")√");
+			break;	
+		default:
+			resultado.setText(resultado.getText() +botonAtext);
 		}
 		
 	}
+
 }
 
 public class GUI_Eventos_Calculadora {
